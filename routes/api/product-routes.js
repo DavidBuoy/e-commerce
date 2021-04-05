@@ -18,8 +18,8 @@ router.get('/:id', async (req, res) => {
   // be sure to include its associated Category and Tag data
   try {
     const productData = await Product.findByPk(req.params.id, {
-      // JOIN with locations, using the Trip through table
-      include: [{ model: Category, through: Tag, as: 'TEST' }]
+
+      // include: [{ model: Tag, through: Category, as: 'TEST' }]
     });
 
     if (!productData) {
@@ -51,7 +51,6 @@ router.post('/',async (req, res) => {
     }
   */
 
-//  ---- THIS WAS STARTER CODE THE I TOOK OUT BECAUSE IT DID DUPLICATES
 
   Product.create(req.body)
     .then((product) => {
@@ -121,18 +120,18 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', async (req, res) => {
    // delete one product by its `id` value
   try {
-    const locationData = await Location.destroy({
+    const productData = await Product.destroy({
       where: {
         id: req.params.id
       }
     });
 
-    if (!locationData) {
+    if (!productData) {
       res.status(404).json({ message: 'No location found with this id!' });
       return;
     }
 
-    res.status(200).json(locationData);
+    res.status(200).json(productData);
   } catch (err) {
     res.status(500).json(err);
   }
